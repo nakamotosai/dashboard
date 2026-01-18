@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --color-luxury-dark: #0a0a0a;
+  --color-luxury-gold: #d4af37;
+  --color-luxury-accent: #1e3a8a;
+  --color-luxury-text: #e5e5e5;
+  --color-luxury-muted: #525252;
+
+  --font-serif: "Playfair Display", "Merriweather", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --animate-vertical-scroll: vertical-scroll 150s linear infinite;
+
+  @keyframes vertical-scroll {
+    0% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+}
+
+/* Utilities */
+.glass-panel {
+  @apply bg-zinc-900/40 backdrop-blur-xl border border-white/10 shadow-2xl;
+}
+
+body {
+  @apply bg-luxury-dark text-luxury-text font-serif overflow-hidden select-none;
+}
+
+.text-gradient-gold {
+  @apply bg-gradient-to-r from-luxury-gold to-yellow-200 bg-clip-text text-transparent;
+}

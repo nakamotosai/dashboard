@@ -29,36 +29,36 @@ export const Clock = () => {
     const tzOffset = format(time, 'xxx');
 
     return (
-        <div className="flex flex-col justify-between h-full w-full bg-black/40 backdrop-blur-md border border-white/10 px-8 pt-8 pb-12 relative overflow-hidden group select-none rounded-3xl">
+        <div className="flex flex-col justify-between h-full w-full glass-panel px-6 pt-6 pb-8 relative overflow-hidden group select-none rounded-3xl">
             {/* Background Glows */}
             <div className="absolute -right-16 -top-16 w-60 h-60 bg-luxury-gold/10 rounded-full blur-[100px] pointer-events-none" />
             <div className="absolute -left-16 -bottom-16 w-60 h-60 bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
 
-            {/* Corner Accents (Simplified) */}
+            {/* Corner Accents */}
             <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-luxury-gold/50" />
             <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-luxury-gold/50" />
             <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-luxury-gold/50" />
             <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-luxury-gold/50" />
 
             {/* Header: Date Info */}
-            <div className="flex justify-between items-end border-b border-white/5 pb-4">
+            <div className="flex justify-between items-end border-b border-white/5 pb-2">
                 <div className="flex flex-col">
-                    <span className="text-[10px] text-luxury-muted tracking-widest uppercase mb-1">Date</span>
-                    <span className="text-lg font-sans font-medium text-luxury-text tracking-wide tabular-nums">
+                    <span className="text-[9px] text-luxury-muted tracking-widest uppercase mb-0.5">Date</span>
+                    <span className="text-base font-sans font-medium text-luxury-text tracking-wide tabular-nums">
                         {format(time, 'yyyy-MM-dd')}
                     </span>
                 </div>
                 <div className="flex flex-col text-right">
-                    <span className="text-[10px] text-luxury-muted tracking-widest uppercase mb-1">Day</span>
-                    <span className="text-lg font-sans font-medium text-luxury-gold tracking-widest">
+                    <span className="text-[9px] text-luxury-muted tracking-widest uppercase mb-0.5">Day</span>
+                    <span className="text-base font-sans font-medium text-luxury-gold tracking-widest">
                         {format(time, 'EEEE', { locale: zhCN })}
                     </span>
                 </div>
             </div>
 
             {/* Center: Time */}
-            <div className="flex flex-col items-center justify-center py-4">
-                <div className="flex items-baseline gap-3">
+            <div className="flex-1 flex flex-col items-center justify-center py-2">
+                <div className="flex items-baseline gap-2">
                     <h1 className="text-5xl lg:text-6xl font-serif font-light tracking-tighter text-luxury-text tabular-nums drop-shadow-2xl">
                         {format(time, 'HH:mm')}
                     </h1>
@@ -68,36 +68,36 @@ export const Clock = () => {
                         </span>
                     </div>
                 </div>
-                <div className="text-[10px] text-luxury-muted/50 tracking-[0.5em] uppercase mt-4 font-sans">
+                <div className="text-[9px] text-luxury-muted/50 tracking-[0.4em] uppercase mt-2 font-sans">
                     UTC {tzOffset}
                 </div>
             </div>
 
             {/* Footer: Progress & Stats */}
-            <div className="space-y-4">
+            <div className="space-y-3">
                 {/* Progress Bar */}
-                <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] text-luxury-muted font-sans tracking-wider uppercase">
+                <div className="space-y-1.5">
+                    <div className="flex justify-between text-[9px] text-zinc-500 font-sans tracking-widest uppercase">
                         <span>Daily Progress</span>
-                        <span>{dayProgress.toFixed(1)}%</span>
+                        <span className="font-mono">{dayProgress.toFixed(1)}%</span>
                     </div>
                     <div className="h-1 w-full bg-white/5 overflow-hidden rounded-full">
                         <div
-                            className="h-full bg-luxury-gold shadow-[0_0_10px_rgba(212,175,55,0.4)]"
+                            className="h-full bg-luxury-gold shadow-[0_0_10px_rgba(212,175,55,0.4)] transition-all duration-1000"
                             style={{ width: `${dayProgress}%` }}
                         />
                     </div>
                 </div>
 
-                {/* Sub-stats (Simplified Grid) */}
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/5 rounded px-3 py-1.5 flex justify-between items-center border border-white/5 hover:border-luxury-gold/30 transition-colors">
-                        <span className="text-[10px] text-luxury-muted uppercase tracking-wider">Day No.</span>
-                        <span className="text-xs text-luxury-text font-mono">{dayOfYear}</span>
+                {/* Sub-stats */}
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-white/5 rounded-xl px-3 py-1.5 flex justify-between items-center border border-white/5 transition-colors">
+                        <span className="text-[8px] text-zinc-500 uppercase tracking-widest">Day No.</span>
+                        <span className="text-[10px] text-luxury-text font-mono font-bold tracking-tighter">{dayOfYear}</span>
                     </div>
-                    <div className="bg-white/5 rounded px-3 py-1.5 flex justify-between items-center border border-white/5 hover:border-luxury-gold/30 transition-colors">
-                        <span className="text-[10px] text-luxury-muted uppercase tracking-wider">Week</span>
-                        <span className="text-xs text-luxury-text font-mono">#{weekNumber}</span>
+                    <div className="bg-white/5 rounded-xl px-3 py-1.5 flex justify-between items-center border border-white/5 transition-colors">
+                        <span className="text-[8px] text-zinc-500 uppercase tracking-widest">Week</span>
+                        <span className="text-[10px] text-luxury-text font-mono font-bold tracking-tighter">#{weekNumber}</span>
                     </div>
                 </div>
             </div>

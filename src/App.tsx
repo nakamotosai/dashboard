@@ -1,4 +1,3 @@
-
 import { Clock } from './components/Clock';
 import { Weather } from './components/Weather';
 import { Finance } from './components/Finance';
@@ -12,7 +11,7 @@ import { MapBackground } from './components/MapBackground';
 
 function App() {
   return (
-    <div className="relative h-screen w-screen bg-transparent text-white pt-24 pb-24 pr-24 pl-[34vw] grid grid-cols-12 grid-rows-6 gap-6 overflow-hidden box-border">
+    <div className="relative h-screen w-screen bg-transparent text-white pt-24 pb-40 pr-24 pl-[34vw] grid grid-cols-12 grid-rows-6 gap-6 overflow-hidden box-border">
       <MapBackground />
 
       {/* 
@@ -25,8 +24,7 @@ function App() {
       */}
 
       {/* 1. Clock (Span 3) */}
-      <div className="col-span-3 row-span-2 glass-panel rounded-3xl relative overflow-hidden flex flex-col justify-center">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="col-span-3 row-span-2">
         <Clock />
       </div>
 

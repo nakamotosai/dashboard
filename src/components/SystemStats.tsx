@@ -1,54 +1,38 @@
 import React, { useState, useEffect } from 'react';
 
-interface StatCircleProps {
+interface StatBarProps {
     label: string;
     value: number;
     color: string;
     glowColor: string;
 }
 
-const StatCircle: React.FC<StatCircleProps> = ({ label, value, color, glowColor }) => {
+const StatBar: React.FC<StatBarProps> = ({ label, value, color, glowColor }) => {
     return (
-        <div className="relative w-16 h-16 flex items-center justify-center group">
-            {/* Outer Glow Effect */}
-            <div className={`absolute inset-0 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 ${glowColor}`} />
+        <div className="flex items-center gap-3 w-full group">
+            {/* Label - Reduced Fixed Width */}
+            <span className="text-[10px] text-zinc-500 font-sans font-medium tracking-widest uppercase w-14 shrink-0">
+                {label.split(' ')[0]}
+            </span>
 
-            <svg className="w-full h-full transform -rotate-90 overflow-visible drop-shadow-[0_0_8px_rgba(0,0,0,0.5)]">
-                {/* Background Track */}
-                <circle
-                    cx="32"
-                    cy="32"
-                    r="24"
-                    stroke="currentColor"
-                    strokeWidth="6"
-                    fill="transparent"
-                    className="text-white/5"
+            {/* Progress Bar - Flex Grow */}
+            <div className="flex-1 relative h-1.5 bg-white/5 rounded-full overflow-hidden">
+                {/* Glow Background */}
+                <div
+                    className={`absolute inset-0 opacity-20 blur-md transition-all duration-1000 ${glowColor}`}
+                    style={{ width: `${value}%` }}
                 />
-                {/* Progress Bar */}
-                <circle
-                    cx="32"
-                    cy="32"
-                    r="24"
-                    stroke="currentColor"
-                    strokeWidth="6"
-                    fill="transparent"
-                    strokeDasharray={151}
-                    strokeDashoffset={151 * (1 - value / 100)}
-                    strokeLinecap="round"
-                    className={`${color} transition-all duration-1000 ease-out`}
-                    style={{
-                        filter: `drop-shadow(0 0 10px currentColor)`
-                    }}
+                {/* Filling Bar */}
+                <div
+                    className={`absolute inset-y-0 left-0 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_currentColor] ${color.replace('text-', 'bg-')}`}
+                    style={{ width: `${value}%` }}
                 />
-            </svg>
+            </div>
 
-            {/* Inner Content */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-[8px] text-zinc-500 font-sans font-bold tracking-widest leading-none mb-0.5">{label}</span>
-                <div className="flex items-baseline">
-                    <span className={`text-xs font-black font-mono tracking-tighter ${color}`}>{value}</span>
-                    <span className="text-[8px] text-zinc-500 font-sans ml-0.5">%</span>
-                </div>
+            {/* Percentage - Right Aligned */}
+            <div className="flex items-baseline gap-0.5 w-10 justify-end">
+                <span className={`text-xs font-mono font-bold ${color}`}>{value}</span>
+                <span className="text-[8px] text-zinc-600 font-sans">%</span>
             </div>
         </div>
     );
@@ -73,10 +57,13 @@ export const SystemStats = () => {
     }, []);
 
     return (
-        <div className="glass-panel rounded-3xl flex items-center justify-around p-6 h-full w-full bg-gradient-to-br from-white/5 to-transparent border border-white/10 shadow-[inner_0_0_20px_rgba(0,0,0,0.5)]">
-            <StatCircle label="CPU" value={stats.cpu} color="text-blue-500" glowColor="bg-blue-500" />
-            <StatCircle label="RAM" value={stats.ram} color="text-emerald-400" glowColor="bg-emerald-400" />
-            <StatCircle label="VRAM" value={stats.vram} color="text-orange-400" glowColor="bg-orange-400" />
+        <div className="glass-panel rounded-3xl flex flex-col justify-center gap-4 px-6 py-12 h-full w-full relative overflow-hidden">
+            {/* Ambient Background Glows */}
+            <div className="absolute -right-10 -top-10 w-32 h-32 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+
+            <StatBar label="CPU Loading" value={stats.cpu} color="text-blue-400" glowColor="bg-blue-400" />
+            <StatBar label="Memory Usage" value={stats.ram} color="text-emerald-400" glowColor="bg-emerald-400" />
+            <StatBar label="VRAM Status" value={stats.vram} color="text-orange-400" glowColor="bg-orange-400" />
         </div>
     );
 };

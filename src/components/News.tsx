@@ -35,7 +35,7 @@ export const News = () => {
                 setLoading(false);
 
                 // Asynchronously fetch images for the top items
-                fetchedNews.slice(0, 15).forEach(async (item, idx) => {
+                fetchedNews.slice(0, 15).forEach(async (item) => {
                     try {
                         const pageRes = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(item.link));
                         const pageData = await pageRes.json();

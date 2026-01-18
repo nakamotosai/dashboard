@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Volume2, VolumeX, Play, Pause } from 'lucide-react';
 
 export const YouTubeLive = () => {
@@ -6,6 +6,13 @@ export const YouTubeLive = () => {
     const [isMuted, setIsMuted] = useState(true);
     const [isPlaying, setIsPlaying] = useState(true);
     const iframeRef = useRef<HTMLIFrameElement>(null);
+    const isPlayingRef = useRef(isPlaying);
+    const autoPausedRef = useRef(false);
+
+    // Sync ref with state
+    useEffect(() => {
+        isPlayingRef.current = isPlaying;
+    }, [isPlaying]);
 
     const sendCommand = (func: string, args: any[] = []) => {
         if (!iframeRef.current) return;
@@ -15,6 +22,50 @@ export const YouTubeLive = () => {
             args: args
         }), '*');
     };
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                if (isPlayingRef.current) {
+                    sendCommand('pauseVideo');
+                    autoPausedRef.current = true;
+                    setIsPlaying(false);
+                }
+            } else {
+                if (autoPausedRef.current) {
+                    sendCommand('playVideo');
+                    autoPausedRef.current = false;
+                    setIsPlaying(true);
+                }
+            }
+        };
+
+        // Standard Page Visibility API
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        // Lively Wallpaper Specific API
+        (window as any).livelyWindowStateChangeListener = (state: number) => {
+            // state 0: hidden/obscured, 1: visible
+            if (state === 0) {
+                if (isPlayingRef.current) {
+                    sendCommand('pauseVideo');
+                    autoPausedRef.current = true;
+                    setIsPlaying(false);
+                }
+            } else if (state === 1) {
+                if (autoPausedRef.current) {
+                    sendCommand('playVideo');
+                    autoPausedRef.current = false;
+                    setIsPlaying(true);
+                }
+            }
+        };
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            delete (window as any).livelyWindowStateChangeListener;
+        };
+    }, []);
 
     const toggleMute = () => {
         const nextMutedState = !isMuted;

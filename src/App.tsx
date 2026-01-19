@@ -4,14 +4,14 @@ import { Finance } from './components/Finance';
 import { News } from './components/News';
 import { SystemStats } from './components/SystemStats';
 import { QuickLaunch } from './components/QuickLaunch';
-import { NetworkGraph } from './components/NetworkGraph';
+
 import { TaskManager } from './components/TaskManager';
 import { YouTubeLive } from './components/YouTubeLive';
 import { MapBackground } from './components/MapBackground';
 
 function App() {
   return (
-    <div className="relative h-screen w-screen bg-transparent text-white pt-24 pb-40 pr-24 pl-[34vw] grid grid-cols-12 grid-rows-6 gap-6 overflow-hidden box-border">
+    <div className="relative h-screen w-screen bg-transparent text-white pt-[86px] pb-[150px] pr-[86px] pl-[calc(34vw-10px)] grid grid-cols-12 grid-rows-6 gap-8 overflow-hidden box-border">
       <MapBackground />
 
       {/* 
@@ -39,7 +39,7 @@ function App() {
         <Weather />
       </div>
 
-      <div className="col-span-4 row-span-2">
+      <div className="col-span-4 row-span-3">
         <News />
       </div>
 
@@ -58,10 +58,7 @@ function App() {
         <SystemStats />
       </div>
 
-      {/* 7. Network Graph (Span 4) */}
-      <div className="col-span-4 row-span-1">
-        <NetworkGraph />
-      </div>
+
 
 
       {/* --- BOTTOM ZONE (Rows 4-6) --- 

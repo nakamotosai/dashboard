@@ -69,42 +69,82 @@ export const Weather = () => {
     const { icon, text } = getWeatherInfo(weather.weathercode);
 
     return (
-        <div className="glass-panel w-full h-full rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden group">
+        <div className="glass-panel w-full h-full rounded-3xl p-5 flex flex-col relative overflow-hidden group [container-type:size]">
             {/* Background Glows */}
+            <style>{`
+                @keyframes breathing-glow {
+                    0%, 100% { 
+                        filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.3)); 
+                        transform: scale(0.96) rotate(-2deg); 
+                    }
+                    50% { 
+                        filter: drop-shadow(0 0 40px rgba(234, 179, 8, 0.8)); 
+                        transform: scale(1.12) rotate(3deg); 
+                    }
+                }
+                @keyframes halo-pulse {
+                    0%, 100% { transform: scale(1); opacity: 0.4; }
+                    50% { transform: scale(1.8); opacity: 0.8; }
+                }
+            `}</style>
             <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-luxury-gold/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -left-10 -top-10 w-32 h-32 bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="flex justify-between items-center z-10">
-                <div className="flex flex-col">
-                    <h3 className="text-luxury-gold font-sans text-sm font-medium uppercase tracking-widest mb-1 truncate">日本, 东京</h3>
-                    <div className="flex flex-col text-white">
-                        <div className="text-5xl font-serif leading-tight">
+            {/* Fixed Header: Location */}
+            <div className="shrink-0 z-10">
+                <h3 className="text-luxury-gold font-sans text-sm font-medium uppercase tracking-widest truncate flex items-center gap-2">
+                    日本, 东京
+                </h3>
+            </div>
+
+            {/* Elastic Middle: Temperature & Icon */}
+            <div className="flex-1 flex flex-row items-center justify-between min-h-0 w-full z-10 px-1">
+                <div className="flex flex-col justify-center gap-[1cqh]">
+                    {/* Temperature */}
+                    <div className="flex items-start leading-none font-serif text-white">
+                        <span className="text-[clamp(2.5rem,25cqw,5rem)] tabular-nums tracking-tighter">
                             {Math.round(weather.temperature)}
-                            <span className="text-3xl text-luxury-gold/50 ml-1">°C</span>
-                        </div>
-                        <div className="text-xl font-sans font-medium text-zinc-300 mt-1">
-                            {text}
-                        </div>
+                        </span>
+                        <span className="text-[clamp(1rem,8cqw,2rem)] text-luxury-gold/60 mt-[1cqw] ml-1">°C</span>
+                    </div>
+                    {/* Weather Condition Text */}
+                    <div className="text-[clamp(1rem,8cqw,1.5rem)] font-sans font-medium text-zinc-300">
+                        {text}
                     </div>
                 </div>
-                <div className="w-16 h-16 opacity-90 drop-shadow-[0_0_15px_rgba(212,175,55,0.3)] mt-15">
-                    {icon}
+
+                {/* Weather Icon with Halo */}
+                <div className="relative w-[clamp(3.5rem,28cqw,7rem)] h-[clamp(3.5rem,28cqw,7rem)] flex items-center justify-center">
+                    {/* Breathing Halo */}
+                    <div
+                        className="absolute w-1/2 h-1/2 bg-luxury-gold rounded-full blur-2xl pointer-events-none"
+                        style={{ animation: 'halo-pulse 4s ease-in-out infinite' }}
+                    />
+                    {/* Rotating & Scaling Icon */}
+                    <div
+                        className="w-full h-full relative z-10"
+                        style={{ animation: 'breathing-glow 4s ease-in-out infinite' }}
+                    >
+                        {icon}
+                    </div>
                 </div>
             </div>
 
-            {/* Detailed Stats Grid */}
-            <div className="grid grid-cols-3 gap-2 pt-4 mt-2 border-t border-white/5 z-10">
-                <div className="flex flex-col gap-1">
-                    <span className="text-[9px] font-sans font-medium tracking-widest uppercase text-zinc-500 whitespace-nowrap">体感</span>
-                    <span className="text-xs font-mono text-zinc-200">{Math.round(weather.feelsLike)}°C</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                    <span className="text-[9px] font-sans font-medium tracking-widest uppercase text-zinc-500 whitespace-nowrap">湿度</span>
-                    <span className="text-xs font-mono text-zinc-200">{weather.humidity}%</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                    <span className="text-[9px] font-sans font-medium tracking-widest uppercase text-zinc-500 whitespace-nowrap">紫外线</span>
-                    <span className="text-xs font-mono text-zinc-200">{weather.uvIndex.toFixed(1)}</span>
+            {/* Fixed Footer: Detailed Stats Grid */}
+            <div className="shrink-0 mt-auto pt-4 border-t border-white/5 z-10">
+                <div className="grid grid-cols-3 gap-2">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-[9px] font-sans font-medium tracking-widest uppercase text-zinc-500 whitespace-nowrap">体感</span>
+                        <span className="text-xs font-mono text-zinc-200">{Math.round(weather.feelsLike)}°C</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <span className="text-[9px] font-sans font-medium tracking-widest uppercase text-zinc-500 whitespace-nowrap">湿度</span>
+                        <span className="text-xs font-mono text-zinc-200">{weather.humidity}%</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <span className="text-[9px] font-sans font-medium tracking-widest uppercase text-zinc-500 whitespace-nowrap">紫外线</span>
+                        <span className="text-xs font-mono text-zinc-200">{weather.uvIndex.toFixed(1)}</span>
+                    </div>
                 </div>
             </div>
         </div>

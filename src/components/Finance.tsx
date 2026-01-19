@@ -58,38 +58,56 @@ export const Finance = () => {
 
     return (
         <div className="grid grid-rows-2 gap-4 h-full">
+            <style>{`
+                @container (max-height: 60px) {
+                    .finance-cny-footer {
+                        display: none;
+                    }
+                }
+            `}</style>
+
             {/* BTC Card - Top Half */}
-            <div className="glass-panel p-5 rounded-3xl flex flex-col justify-center relative overflow-hidden group">
+            <div className="glass-panel p-5 rounded-3xl flex flex-row justify-between relative overflow-hidden group [container-type:size] finance-btc-card">
                 {/* Background Glows */}
                 <div className="absolute -right-4 -top-4 w-24 h-24 bg-luxury-gold/10 rounded-full blur-2xl pointer-events-none" />
                 <div className="absolute -left-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl pointer-events-none opacity-50" />
 
-                <div className="flex items-center justify-between mb-2 z-10">
-                    <span className="text-xs font-sans text-luxury-gold font-medium tracking-widest uppercase flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 bg-luxury-gold rounded-full animate-pulse" />
-                        Bitcoin
-                    </span>
-
-                    {/* 24h Change Percentage */}
-                    <div className="flex items-center gap-1 text-sm font-bold text-luxury-gold drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]">
-                        {btcChange24h >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
-                        <span>{btcChange24h >= 0 ? '+' : ''}{btcChange24h.toFixed(2)}%</span>
+                {/* Left Column: Title, Price, CNY */}
+                <div className="flex flex-col h-full flex-1 min-w-0 z-10">
+                    {/* Header: Title */}
+                    <div className="shrink-0 mb-1">
+                        <span className="text-xs font-sans text-luxury-gold font-medium tracking-widest uppercase flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 bg-luxury-gold rounded-full animate-pulse" />
+                            Bitcoin
+                        </span>
                     </div>
-                </div>
 
-                <div className="flex justify-between items-end z-10">
-                    <div className="flex flex-col">
-                        <div className="text-3xl font-serif text-white tracking-tight">
+                    {/* Price (Vertically Centered in available space) */}
+                    <div className="flex-1 flex items-center">
+                        <div className="text-[clamp(1.5rem,15cqw,3.5rem)] font-serif text-white tracking-tight leading-none lining-nums">
                             ${btcusd.toLocaleString()}
                         </div>
-                        <div className="text-sm font-sans text-zinc-400 mt-1 flex items-center gap-1 opacity-80">
-                            <span className="text-xs text-luxury-gold/70">≈</span>
+                    </div>
+
+                    {/* Footer: CNY Price */}
+                    <div className="shrink-0 pt-1 finance-cny-footer">
+                        <div className="text-[clamp(0.7rem,4cqw,1rem)] font-sans text-zinc-400 flex items-center gap-1 opacity-80 lining-nums">
+                            <span className="text-luxury-gold/70">≈</span>
                             <span>¥ {btccny.toLocaleString()}</span>
                         </div>
                     </div>
+                </div>
 
-                    {/* Sparkline Chart */}
-                    <div className="w-24 h-10 mb-1 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+                {/* Right Column: Change & Graph */}
+                <div className="flex flex-col justify-between items-end h-full shrink-0 z-10 ml-4">
+                    {/* Top: 24h Change Percentage */}
+                    <div className="flex items-center gap-1 text-sm font-bold text-luxury-gold drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] lining-nums leading-none">
+                        {btcChange24h >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+                        <span>{btcChange24h >= 0 ? '+' : ''}{btcChange24h.toFixed(2)}%</span>
+                    </div>
+
+                    {/* Bottom: Sparkline Chart */}
+                    <div className="w-[30cqw] h-[clamp(1.5rem,15cqh,3rem)] opacity-60 group-hover:opacity-100 transition-opacity duration-500">
                         {sparklinePath && (
                             <svg viewBox="0 0 100 30" width="100%" height="100%" className="overflow-visible">
                                 <path
@@ -114,33 +132,38 @@ export const Finance = () => {
 
                 <div className="relative w-full h-full min-h-[80px] z-10">
                     {/* Japan - Top Left */}
-                    <div className="absolute top-0 left-0 flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-white border border-white/20 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                            <div className="w-4 h-4 rounded-full bg-[#BC002D]" />
+                    <div className="absolute top-0 left-0 flex items-center gap-2">
+                        <div className="w-[clamp(1.5rem,4vw,2rem)] h-[clamp(1.5rem,4vw,2rem)] rounded-full bg-white border border-white/20 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                            <div className="w-1/2 h-1/2 rounded-full bg-[#BC002D]" />
                         </div>
-                        <div className="flex flex-col items-start">
-                            <div className="flex items-baseline gap-1">
-                                <span className="text-3xl font-serif text-white tracking-tight">100</span>
-                                <span className="text-xs font-sans font-medium text-luxury-gold uppercase tracking-widest">円</span>
-                            </div>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-[clamp(1.2rem,4vw,1.875rem)] font-serif text-white tracking-tight lining-nums">100</span>
+                            <span className="text-[clamp(0.6rem,1.5vw,0.75rem)] font-sans font-medium text-luxury-gold uppercase tracking-widest">円</span>
                         </div>
                     </div>
 
                     {/* Middle Connector */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10">
-                        <span className="text-4xl font-serif text-white">≈</span>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15">
+                        <span className="text-[clamp(1.5rem,5vw,2.5rem)] font-serif text-white">≈</span>
                     </div>
 
                     {/* China - Bottom Right */}
-                    <div className="absolute bottom-0 right-0 flex items-center gap-3">
-                        <div className="flex flex-col items-end">
-                            <div className="flex items-baseline gap-1">
-                                <span className="text-3xl font-serif text-white tracking-tight">{cnyPer100Jpy.toFixed(2)}</span>
-                                <span className="text-xs font-sans font-medium text-luxury-gold uppercase tracking-widest">元</span>
-                            </div>
+                    <div className="absolute bottom-0 right-0 flex items-center gap-2">
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-[clamp(1.2rem,4vw,1.875rem)] font-serif text-white tracking-tight lining-nums">{cnyPer100Jpy.toFixed(2)}</span>
+                            <span className="text-[clamp(0.6rem,1.5vw,0.75rem)] font-sans font-medium text-luxury-gold uppercase tracking-widest">元</span>
                         </div>
-                        <div className="w-8 h-8 rounded-full bg-[#EE1C25] border border-white/10 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(238,28,37,0.2)] relative overflow-hidden">
-                            <div className="absolute top-1.5 left-1.5 text-[8px] text-[#FFFF00] leading-none select-none">★</div>
+                        <div className="w-[clamp(1.5rem,4vw,2rem)] h-[clamp(1.5rem,4vw,2rem)] rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(238,28,37,0.2)] relative overflow-hidden">
+                            <img
+                                src="https://flagcdn.com/cn.svg"
+                                alt="CN Flag"
+                                className="absolute max-w-none"
+                                style={{
+                                    width: '230%',
+                                    left: '-5%',
+                                    top: '0%'
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
